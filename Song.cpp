@@ -20,17 +20,6 @@ void Song::modify(int n)
 	}
 }
 
-Song::Song(const char* name, int hour, int min, int sec, const char* genre, const char* filename)
-{
-	if (name) strcpy(this->name, name);
-
-	this->duration.setTime(hour,min,sec);
-
-	if(genre) readGenre(genre);
-
-	if(filename) readContent(filename);
-}
-
 void Song::createSong(const char* name, int hour, int min, int sec, const char* genre, const char* filename)
 {
 	if (name) strcpy(this->name, name);
@@ -42,9 +31,17 @@ void Song::createSong(const char* name, int hour, int min, int sec, const char* 
 	if (filename) readContent(filename);
 }
 
+const char* Song::getName() const
+{
+	return name;
+}
+
 void Song::mix(const Song& other)
 {
-	int len = sizeContent <= other.sizeContent ? sizeContent : other.sizeContent;
+	int size = strlen(content);
+	int sizeOther = strlen(other.content);
+
+	int len = size <= sizeOther ? size : sizeOther;
 
 	for (int i = 0; i < len; i++) {
 		content[i] ^= other.content[i];
@@ -58,6 +55,30 @@ void Song::print() const
 	std::cout << " ";
 	printGeneres();
 	std::cout << std::endl;
+}
+
+void Song::writeToBinaryFile(const char* filename)
+{
+	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
+
+	if (!ofs.is_open()) {
+		std::cerr << "Invalid filename.";
+		return;
+	}
+
+	writeToFile(ofs);
+}
+
+void Song::readFromBinaryFile(const char* filename)
+{
+	std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+
+	if (!ifs.is_open()) {
+		std::cerr << "Invalid filename.";
+		return;
+	}
+	else
+		return readFromFile(ifs);
 }
 
 void Song::readGenre(const char* genre)
@@ -147,6 +168,39 @@ void Song::printGeneres() const
 	}
 }
 
+void Song::writeToFile(std::ofstream& ofs)
+{
+	int nameLen = strlen(name);
+
+	ofs.write((const char*)&nameLen, sizeof(nameLen));
+	ofs.write((const char*)name, nameLen * sizeof(char));//sizeof(char) depends
+
+	duration.writeToFile(ofs);
+
+	ofs.write((const char*)&genre, sizeof(genre));
+
+	int contentLen = strlen(content);
+	ofs.write((const char*)&contentLen, sizeof(contentLen));
+	ofs.write((const char*)content, contentLen * sizeof(char));
+}
+
+void Song::readFromFile(std::ifstream& ifs)
+{
+	int nameLen;
+	ifs.read((char*)&nameLen, sizeof(nameLen));
+	ifs.read((char*)name, nameLen * sizeof(char));
+
+	duration.readFromFile(ifs);
+
+	ifs.read((char*)&genre, sizeof(genre));
+
+	int contentLen;
+
+	ifs.read((char*)&contentLen, sizeof(contentLen));
+	ifs.read((char*)content, contentLen * sizeof(char));
+
+}
+
 void Song::Time::setTime(int hour, int min, int sec) 
 {
 	this->hour = hour;
@@ -157,4 +211,18 @@ void Song::Time::setTime(int hour, int min, int sec)
 void Song::Time::print() const
 {
 	std::cout << hour << ":" << min << ":" << sec;
+}
+
+void Song::Time::writeToFile(std::ofstream& ofs)
+{
+	ofs.write((const char*)&hour, sizeof(hour));
+	ofs.write((const char*)&min, sizeof(min));
+	ofs.write((const char*)&sec, sizeof(sec));
+}
+
+void Song::Time::readFromFile(std::ifstream& ifs)
+{
+	ifs.read((char*)&hour, sizeof(hour));
+	ifs.read((char*)&min, sizeof(min));
+	ifs.read((char*)&sec, sizeof(sec));
 }

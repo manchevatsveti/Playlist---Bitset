@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Playlist.h"
+#include "Song.h"
 
 int main() {
 	
@@ -10,4 +11,13 @@ int main() {
 	
 	p.print();
 
+	//p.find("song 2");
+
+	//p.findGenre('r');
+
+	p.save("song 1", "save1.dat");
+
+	Song s;
+	s.readFromBinaryFile("save1.dat");
+	s.print();
 }

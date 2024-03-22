@@ -33,29 +33,35 @@ private:
 	public:
 		void setTime(int hour, int min, int sec);
 		void print() const;
+		void writeToFile(std::ofstream& ofs);
+		void readFromFile(std::ifstream& ifs);
 	};
 
 	char name[MAX_SONG_NAME_LEN] = "";
 	Time duration;
 	char genre = 0; //rphej - rock, pop, hip-hop, edm, jazz
 	char content[MAX_SONG_CONTENT_LEN] = "";
-	int sizeContent = 0;
 
 	void readGenre(const char* genre);
 	void addGenre(char g);
 	void readContent(const char* filename);
 	void readContentFromFile(std::ifstream& ifs);
-	bool isGenreIn(char g) const;
 	int findPosGenre(char ch) const;
 	void printGeneres() const;
+	void writeToFile(std::ofstream& ofs);
+	void readFromFile(std::ifstream& ifs);
 
 public:
 	Song() = default;
-	Song(const char* name, int hour,int min, int sec, const char* genre, const char* filename);
 	void createSong(const char* name, int hour, int min, int sec, const char* genre, const char* filename);
+
+	const char* getName() const;
+	bool isGenreIn(char g) const;
 
 	void modify(int n);
 	void mix(const Song& other);
 	void print() const;
+	void writeToBinaryFile(const char* filename);
+	void readFromBinaryFile(const char* filename);
 };
 
