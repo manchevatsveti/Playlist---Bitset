@@ -35,6 +35,10 @@ private:
 		void print() const;
 		void writeToFile(std::ofstream& ofs);
 		void readFromFile(std::ifstream& ifs);
+
+		int turnToSec() const;
+
+		int compare(const Time& t) const;
 	};
 
 	char name[MAX_SONG_NAME_LEN] = "";
@@ -57,6 +61,7 @@ public:
 
 	const char* getName() const;
 	bool isGenreIn(char g) const;
+	int compareByTime(const Song& s) const;
 
 	void modify(int n);
 	void mix(const Song& other);

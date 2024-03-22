@@ -117,6 +117,11 @@ bool Song::isGenreIn(char g) const
 	return genre & (1 << findPosGenre(g));
 }
 
+int Song::compareByTime(const Song& s) const
+{
+	return this->duration.compare(s.duration);
+}
+
 int Song::findPosGenre(char ch) const
 {
 	switch (ch) {
@@ -225,4 +230,23 @@ void Song::Time::readFromFile(std::ifstream& ifs)
 	ifs.read((char*)&hour, sizeof(hour));
 	ifs.read((char*)&min, sizeof(min));
 	ifs.read((char*)&sec, sizeof(sec));
+}
+
+int Song::Time::turnToSec() const
+{
+	return sec + min * 60 + hour * 60 * 60;
+}
+
+int Song::Time::compare(const Time& t) const
+{
+	int time1 = turnToSec();
+	int time2 = t.turnToSec();
+
+	if (time1 < time2)
+		return -1;
+	else if (time1 == time2)
+		return 0;
+	else if (time1 > time2)
+		return 1;
+
 }

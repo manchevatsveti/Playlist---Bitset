@@ -22,5 +22,8 @@ public:
 	void modify(const char* song, int changeRythm);
 	void modify(const char* song1, const char* song2);
 	void save(const char* song, const char* filename);
+	void sort( int (*pred)(const Song& s1, const Song& s2));
+	void sortByName();
+	void sortByDuration();
 };
 
