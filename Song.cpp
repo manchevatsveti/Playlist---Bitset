@@ -175,7 +175,7 @@ void Song::printGeneres() const
 
 void Song::writeToFile(std::ofstream& ofs)
 {
-	int nameLen = strlen(name);
+	/*int nameLen = strlen(name);
 
 	ofs.write((const char*)&nameLen, sizeof(nameLen));
 	ofs.write((const char*)name, nameLen * sizeof(char));//sizeof(char) depends
@@ -184,8 +184,9 @@ void Song::writeToFile(std::ofstream& ofs)
 
 	ofs.write((const char*)&genre, sizeof(genre));
 
+	ofs.write((const char*)&contentLen, sizeof(contentLen));*/
+
 	int contentLen = strlen(content);
-	ofs.write((const char*)&contentLen, sizeof(contentLen));
 	ofs.write((const char*)content, contentLen * sizeof(char));
 }
 

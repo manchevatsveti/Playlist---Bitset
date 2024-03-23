@@ -6,6 +6,17 @@ namespace {
 	const int MAX_SONG_NAME_LEN = 64;
 	const int MAX_SONG_CONTENT_LEN = 256;
 	const int BYTE_SIZE = 8;
+
+	int getFileSize(std::ifstream& ifs) {
+		int pos = ifs.tellg();
+		
+		ifs.seekg(0, std::ios::end);
+		int lastPos = ifs.tellg();
+
+		ifs.seekg(pos);
+
+		return lastPos;
+	}
 }
 
 namespace MusicGenre {
@@ -44,7 +55,6 @@ private:
 	char name[MAX_SONG_NAME_LEN] = "";
 	Time duration;
 	char genre = 0; //rphej - rock, pop, hip-hop, edm, jazz
-	char content[MAX_SONG_CONTENT_LEN] = "";
 
 	void readGenre(const char* genre);
 	void addGenre(char g);
@@ -56,6 +66,7 @@ private:
 	void readFromFile(std::ifstream& ifs);
 
 public:
+	char content[MAX_SONG_CONTENT_LEN] = "";//!!!!!!!!!!!!!
 	Song() = default;
 	void createSong(const char* name, int hour, int min, int sec, const char* genre, const char* filename);
 
