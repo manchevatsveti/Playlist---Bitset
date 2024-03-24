@@ -57,7 +57,7 @@ void Song::print() const
 	std::cout << std::endl;
 }
 
-void Song::writeToBinaryFile(const char* filename)
+void Song::writeToBinaryFile(const char* filename) const
 {
 	std::ofstream ofs(filename, std::ios::out | std::ios::binary);
 
@@ -109,7 +109,6 @@ void Song::readContent(const char* filename)
 void Song::readContentFromFile(std::ifstream& ifs)
 {
 	ifs.getline(content, MAX_SONG_CONTENT_LEN);
-
 }
 
 bool Song::isGenreIn(char g) const
@@ -156,7 +155,7 @@ void Song::printGeneres() const
 
 	if (isGenreIn(MusicGenre::HIPHOP)) {
 		if (atLeastOne) std::cout << "&";
-		std::cout << "Hi Hop";
+		std::cout << "Hip Hop";
 		atLeastOne = true;
 	}
 
@@ -173,7 +172,7 @@ void Song::printGeneres() const
 	}
 }
 
-void Song::writeToFile(std::ofstream& ofs)
+void Song::writeToFile(std::ofstream& ofs) const
 {
 	/*int nameLen = strlen(name);
 
@@ -219,7 +218,7 @@ void Song::Time::print() const
 	std::cout << hour << ":" << min << ":" << sec;
 }
 
-void Song::Time::writeToFile(std::ofstream& ofs)
+void Song::Time::writeToFile(std::ofstream& ofs) const
 {
 	ofs.write((const char*)&hour, sizeof(hour));
 	ofs.write((const char*)&min, sizeof(min));

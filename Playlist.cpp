@@ -55,7 +55,7 @@ void Playlist::modify(const char* song1, const char* song2)
 	findSongByName(song1).mix(findSongByName(song2));
 }
 
-void Playlist::save(const char* song, const char* filename)
+void Playlist::save(const char* song, const char* filename) const
 {
 	findSongByName(song).writeToBinaryFile(filename);
 }
